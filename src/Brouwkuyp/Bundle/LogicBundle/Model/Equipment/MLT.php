@@ -49,8 +49,7 @@ class MLT implements EquipmentInterface
         if ($phase->getType() == Phase::CONTROL_TEMP) {
             $this->setHeaterTemperature($phase->getValue());
         } elseif ($phase->getType() == Phase::REACH_TEMP) {
-            $this->am->wait();
-            $this->am->receive();
+            $this->setHeaterTemperature($phase->getValue());
             if ($this->getCurrentTemperature() > $phase->getValue()) {
                 echo "MLT, Temperature reached!" . PHP_EOL;
                 $phase->setFinished();
@@ -80,6 +79,8 @@ class MLT implements EquipmentInterface
      */
     public function getCurrentTemperature()
     {
+        $this->am->wait();
+        $this->am->receive();
         return $this->lastTemp;
     }
 
